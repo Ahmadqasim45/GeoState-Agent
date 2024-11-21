@@ -1,8 +1,14 @@
 /********** Template CSS **********/
 :root {
-    --primary: #009CFF;
-    --light: #F3F6F9;
-    --dark: #191C24;
+    --Back: #1aa413;
+    /* --light: linear-gradient(to bottom right, rgba(52, 206, 21, 0.763), rgba(216, 216, 216, 0)); Light green gradient with reduced opacity ; */
+    --side-top-background:#333333;
+    --side-bar-nav-link-hover:rgb(80, 200, 120);
+    ;
+    --Button-Background:rgb(80, 200, 120);
+    --icon-colrs:#1aa413;
+    --text-color:#FFF;
+    
 }
 
 .back-to-top {
@@ -12,7 +18,10 @@
     bottom: 45px;
     z-index: 99;
 }
+.Straight-Bar-Nav{
+    background-color: var(--side-top-background);
 
+}
 
 /*** Spinner ***/
 #spinner {
@@ -74,7 +83,7 @@
     width: 250px;
     height: 100vh;
     overflow-y: auto;
-    background: var(--light);
+    background: var(--side-top-background) !important;
     transition: 0.5s;
     z-index: 999;
 }
@@ -133,8 +142,8 @@
 
 .sidebar .navbar .navbar-nav .nav-link:hover,
 .sidebar .navbar .navbar-nav .nav-link.active {
-    color: var(--primary);
-    background: #FFFFFF;
+    color: var(--text-color);
+    background:var(--side-bar-nav-link-hover);
     border-color: var(--primary);
 }
 
@@ -162,6 +171,9 @@
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     transition: .5s;
+}
+.icons-Bars{
+    color: var(--icon-colrs);
 }
 
 .sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
