@@ -8,6 +8,7 @@
     --Button-Background:rgb(80, 200, 120);
     --icon-colrs:#1aa413;
     --text-color:#FFF;
+    --ul-back-color:#333333;
     
 }
 
@@ -87,6 +88,8 @@
     transition: 0.5s;
     z-index: 999;
 }
+.bg-ul-Geo-State{background-color: var(--ul-back-color);
+color: white;}
 
 .content {
     margin-left: 250px;
@@ -140,6 +143,7 @@
     outline: none;
 }
 
+
 .sidebar .navbar .navbar-nav .nav-link:hover,
 .sidebar .navbar .navbar-nav .nav-link.active {
     color: var(--text-color);
@@ -174,6 +178,10 @@
 }
 .icons-Bars{
     color: var(--icon-colrs);
+}
+.menu-geosate-sider:hover{
+    background:var(--side-bar-nav-link-hover) !important;
+
 }
 
 .sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
