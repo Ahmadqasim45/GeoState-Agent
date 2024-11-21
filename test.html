@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoState Agent Panel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .GeoState-Agent-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background-color: #a6aaad;
+            width: 250px;
+            overflow-y: auto;
+            padding-top: 60px;
+            transition: left 0.3s;
+        }
+
+        .GeoState-Agent-sidebar .nav-link {
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .GeoState-Agent-sidebar .nav-link.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .GeoState-Agent-sidebar .nav-link i {
+            margin-right: 10px;
+        }
+
+        .GeoState-Agent-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .GeoState-Agent-topbar {
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            z-index: 1020;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .GeoState-Agent-topbar .GeoState-Agent-toggle-btn {
+            background-color: #007bff !important;
+            position: absolute;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: block;
+        }
+
+        /* Make the sidebar collapsible on smaller screens */
+        @media (max-width: 768px) {
+            .GeoState-Agent-sidebar {
+                position: absolute;
+                left: -250px;
+                transition: left 0.3s;
+                z-index: 1030;
+            }
+
+            .GeoState-Agent-sidebar.open {
+                left: 0;
+            }
+
+            .GeoState-Agent-content {
+                margin-left: 0;
+            }
+
+            .GeoState-Agent-topbar {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="GeoState-Agent-sidebar d-flex flex-column p-3">
+        <h5 class="text-center py-3">GeoState</h5>
+        <ul class="nav nav-pills flex-column mb-auto" id="sidebar-nav" role="tablist">
+            <li><a href="#dashboard" class="nav-link active" data-bs-toggle="tab" role="tab"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#leads" class="nav-link" data-bs-toggle="tab" role="tab"><i class="fas fa-user-tie"></i> Leads Management</a></li>
+            <li><a href="#listings" class="nav-link" data-bs-toggle="tab" role="tab"><i class="fas fa-home"></i> Property Listings</a></li>
+            <li><a href="#marketing" class="nav-link" data-bs-toggle="tab" role="tab"><i class="fas fa-bullhorn"></i> Marketing Tools</a></li>
+            <li><a href="#transactions" class="nav-link" data-bs-toggle="tab" role="tab"><i class="fas fa-exchange-alt"></i> Transaction Management</a></li>
+            <li><a href="#profile" class="nav-link" data-bs-toggle="tab" role="tab"><i class="fas fa-user"></i> Profile Management</a></li>
+            <li><a href="#resources" class="nav-link" data-bs-toggle="tab" role="tab"><i class="fas fa-book"></i> Resources</a></li>
+            <li><a href="#support" class="nav-link" data-bs-toggle="tab" role="tab"><i class="fas fa-life-ring"></i> Support</a></li>
+        </ul>
+    </nav>
+
+    <!-- Top Bar -->
+    <div class="GeoState-Agent-topbar">
+        <button class="btn btn-sm btn-primary GeoState-Agent-toggle-btn d-md-none" id="sidebar-toggle">☰</button>
+        <h5 class="mb-0 ms-3">Welcome, Agent</h5>
+    </div>
+
+    <!-- Main Content -->
+    <div class="GeoState-Agent-content mt-5 pt-4">
+        <div class="tab-content">
+            <!-- Dashboard Section -->
+            <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                <section id="dashboard" class="mb-5">
+                    <h2 class="mb-3">Dashboard</h2>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Leads</h5>
+                                    <p class="card-text">120</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-success mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Properties Sold</h5>
+                                    <p class="card-text">45</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pending Transactions</h5>
+                                    <p class="card-text">15</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Monthly Leads</h5>
+                                    <canvas id="leadsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Properties Performance</h5>
+                                    <canvas id="propertiesChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+
+            <!-- Leads Management Section -->
+            <div class="tab-pane fade" id="leads" role="tabpanel">
+                <div class="container-fluid py-4">
+                    <h2 class="text-primary mb-4">Leads Management</h2>
+                    <p class="lead mb-4">Organize and streamline your sales process by managing incoming leads, follow-up tasks, client profiles, and communication logs all in one place.</p>
+
+                    <div class="row">
+                        <!-- Incoming Leads Card -->
+                        <div class="col-md-3 mb-4 h-100">
+                            <div class="card shadow-sm border-left-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">Incoming Leads</h5>
+                                    <p class="card-text">Keep track of all your new prospects in one place. View details, status, and priority of each lead for effective management.</p>
+                                    <a href="#" class="btn btn-primary btn-sm">View Leads</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Follow-Up Tasks Card -->
+                        <div class="col-md-3 mb-4 h-100">
+                            <div class="card shadow-sm border-left-warning">
+                                <div class="card-body">
+                                    <h5 class="card-title text-warning">Follow-Up Tasks</h5>
+                                    <p class="card-text">Stay on top of your tasks with automated reminders and follow-up actions for each lead to ensure timely engagement.</p>
+                                    <a href="#" class="btn btn-warning btn-sm">Manage Tasks</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client Profiles Card -->
+                        <div class="col-md-3 mb-4 h-100">
+                            <div class="card shadow-sm border-left-success">
+                                <div class="card-body">
+                                    <h5 class="card-title text-success">Client Profiles</h5>
+                                    <p class="card-text">Access comprehensive profiles for each client, including contact info, preferences, and past interactions for personalized service.</p>
+                                    <a href="#" class="btn btn-success btn-sm">View Profiles</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Communication Logs Card -->
+                        <div class="col-md-3 mb-4 h-100">
+                            <div class="card shadow-sm border-left-danger">
+                                <div class="card-body">
+                                    <h5 class="card-title text-danger">Communication Logs</h5>
+                                    <p class="card-text">Keep a record of all communication with your clients, including emails, calls, and meetings, for easy reference and follow-up.</p>
+                                    <a href="#" class="btn btn-danger btn-sm">View Logs</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Additional Sections (Listings, Marketing, etc.) -->
+            <!-- (Continue the structure as above for other sections like Listings, Marketing, etc.) -->
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle Sidebar for mobile view
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.querySelector('.GeoState-Agent-sidebar');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Example Chart for Leads Management
+        const leadsCtx = document.getElementById('leadsChart').getContext('2d');
+        const leadsChart = new Chart(leadsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Leads Generated',
+                    data: [30, 40, 50, 60, 80, 90],
+                    borderColor: '#007bff',
+                    fill: false
+                }]
+            }
+        });
+
+        // Example Chart for Properties Performance
+        const propertiesCtx = document.getElementById('propertiesChart').getContext('2d');
+        const propertiesChart = new Chart(propertiesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Properties Sold',
+                    data: [5, 10, 15, 20, 25, 30],
+                    backgroundColor: '#28a745'
+                }]
+            }
+        });
+    </script>
+</body>
+
+</html>
